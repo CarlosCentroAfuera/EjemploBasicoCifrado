@@ -9,12 +9,12 @@ import javax.crypto.BadPaddingException
 fun main(){
 
     val holaCifrado = cifrar("Hola", "qwertyu")
-    val holaDescifrado = descifrar(holaCifrado, "qwertyU")
+    val holaDescifrado = descifrar(holaCifrado, "qwertyu")
 
-    //descifrar(cifrar("Hola", "qwertyuiopasdfg"), "qwertyuiopasdfg")
-    //descifrar(cifrar("Que tal", "jajajaja"), "jajajaja")
+    descifrar(cifrar("Hola", "qwertyuiopasdfg"), "qwertyuiopasdfg")
+    descifrar(cifrar("Que tal", "jajajaja"), "jajajaja")
 
-    /*do {
+    do {
         println("******************************************")
         println("Introduce un mensaje: ")
 
@@ -22,11 +22,11 @@ fun main(){
         println("Introduce la llave de cifrado:")
         val llaveCifrado = readLine()
 
-        if (mensaje != null && llaveCifrado != null) {
+        if (!mensaje.isNullOrBlank() && !llaveCifrado.isNullOrBlank()) {
             val textCifrado = cifrar(mensaje, llaveCifrado)
             println("Introduce la llave de descifrado:")
             val llaveDescifrado = readLine()
-            if (llaveDescifrado != null) {
+            if (!llaveDescifrado.isNullOrBlank()) {
                 try {
                     val mensajeDescifrado = descifrar(textCifrado, llaveDescifrado)
 
@@ -37,14 +37,13 @@ fun main(){
                     }
                     println("\n")
                 } catch (e : BadPaddingException) {
-                    e.printStackTrace()
-                    println("Fallo al descifrar")
+                    println("Fallo al descifrar ${e.cause}")
                 }
 
             }
         }
 
-    } while(true)*/
+    } while(true)
 
 }
 
