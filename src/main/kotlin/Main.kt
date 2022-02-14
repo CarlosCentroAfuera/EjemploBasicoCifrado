@@ -51,7 +51,7 @@ private fun cifrar(textoEnString : String, llaveEnString : String) : String {
     println("Voy a cifrar: $textoEnString")
     val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
     cipher.init(Cipher.ENCRYPT_MODE, getKey(llaveEnString))
-    val textCifrado = Base64.getEncoder().encodeToString(cipher.doFinal(textoEnString.toByteArray(Charsets.UTF_8)))
+    val textCifrado = Base64.getUrlEncoder().encodeToString(cipher.doFinal(textoEnString.toByteArray(Charsets.UTF_8)))
     println("He obtenido $textCifrado")
     return textCifrado
 }
@@ -61,7 +61,7 @@ private fun descifrar(textoCifrrado : String, llaveEnString : String) : String {
     println("Voy a descifrar $textoCifrrado")
     val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
     cipher.init(Cipher.DECRYPT_MODE, getKey(llaveEnString))
-    val textDescifrado = String(cipher.doFinal(Base64.getDecoder().decode(textoCifrrado)))
+    val textDescifrado = String(cipher.doFinal(Base64.getUrlDecoder().decode(textoCifrrado)))
     println("He obtenido $textDescifrado")
     return textDescifrado
 }
