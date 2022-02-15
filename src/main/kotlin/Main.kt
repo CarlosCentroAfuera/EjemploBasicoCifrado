@@ -5,8 +5,13 @@ import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
 import javax.crypto.BadPaddingException
 
+val type = "AES/ECB/PKCS5Padding"
 
 fun main(){
+
+    repeat(5) {
+        descifrar(cifrar("qwerasd1", "llave"), "llave")
+    }
 
     val holaCifrado = cifrar("Hola", "qwertyu")
     val holaDescifrado = descifrar(holaCifrado, "qwertyu")
@@ -49,23 +54,27 @@ fun main(){
 
 private fun cifrar(textoEnString : String, llaveEnString : String) : String {
     println("Voy a cifrar: $textoEnString")
-    val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+    val cipher = Cipher.getInstance(type)
     cipher.init(Cipher.ENCRYPT_MODE, getKey(llaveEnString))
-    val textCifrado = Base64.getUrlEncoder().encodeToString(cipher.doFinal(textoEnString.toByteArray(Charsets.UTF_8)))
-    println("He obtenido $textCifrado")
-    return textCifrado
+    val textCifrado = cipher.doFinal(textoEnString.toByteArray(Charsets.UTF_8))
+    println("Texto cifrado $textCifrado")
+    val textCifradoYEncodado = Base64.getUrlEncoder().encodeToString(textCifrado)
+    println("Texto cifrado y encodado $textCifradoYEncodado")
+    return textCifradoYEncodado
+    //return textCifrado.toString()
 }
 
 @Throws(BadPaddingException::class)
-private fun descifrar(textoCifrrado : String, llaveEnString : String) : String {
-    println("Voy a descifrar $textoCifrrado")
-    val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
+private fun descifrar(textoCifradoYEncodado : String, llaveEnString : String) : String {
+    println("Voy a descifrar $textoCifradoYEncodado")
+    val cipher = Cipher.getInstance(type)
     cipher.init(Cipher.DECRYPT_MODE, getKey(llaveEnString))
-    val textDescifrado = String(cipher.doFinal(Base64.getUrlDecoder().decode(textoCifrrado)))
-    println("He obtenido $textDescifrado")
-    return textDescifrado
+    val textCifradoYDencodado = Base64.getUrlDecoder().decode(textoCifradoYEncodado)
+    println("Texto cifrado $textCifradoYDencodado")
+    val textDescifradoYDesencodado = String(cipher.doFinal(textCifradoYDencodado))
+    println("Texto cifrado y desencodado $textDescifradoYDesencodado")
+    return textDescifradoYDesencodado
 }
-
 
 private fun getKey(llaveEnString : String): SecretKeySpec {
     var llaveUtf8 = llaveEnString.toByteArray(Charsets.UTF_8)
